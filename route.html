@@ -8,29 +8,45 @@
 <body>
   <div class="phone-frame">
     <header class="app-header">
-      <a href="map.html" class="nav-link">← Back to map</a>
+      <a href="map.html" class="nav-link">← Back to Map</a>
       <h1 class="app-title">Route View</h1>
       <a href="index.html" class="nav-link">Home</a>
     </header>
 
-    <main>
+    <main class="route-main">
       <h2 class="screen-title">Optimal store route</h2>
-      <p class="screen-subtitle">
+      <p class="screen-subtitle route-subtitle">
         Follow this path for the quickest trip through the store.
       </p>
 
       <div class="route-stats">
-        Estimated time: 12 minutes<br>
-        Aisles visited: 3 -> 7 -> 9<br>
-        Checked-off items will be tracked as you go.
+        <strong>Trip summary</strong><br>
+        Estimated time: 13 minutes<br>
+        Aisles visited: 2 → 3 → 7 → 12<br>
       </div>
 
-      <div class="route-box">
-        Highlighted store path with pins for Milk, Carrots, and all other items
-      </div>
+      <!-- route map pic card -->
+      <section class="route-map-card">
+        <img
+          src="route-map.png" 
+          alt="Store map with highlighted route through the aisles"
+          class="route-map-image"
+        >
+      </section>
+
+      <!-- step list under map -->
+      <section class="route-steps">
+        <h3 class="route-steps-title">Route steps</h3>
+        <ol class="route-steps-list">
+          <li>Start at entrance and head to Aisle 2 (Dairy).</li>
+          <li>Start at entrance and head to Aisle 3 (Produce).</li>
+          <li>Continue to Aisle 7 (Meat).</li>
+          <li>Finish in Aisle 12 for any remaining pantry items.</li>
+        </ol>
+      </section>
 
       <button class="primary-btn" type="button" onclick="location.href='index.html'">
-        Done! Back to home
+        Back to home
       </button>
     </main>
   </div>

@@ -1,4 +1,5 @@
-/* Reset-ish */
+
+/*  basics */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,31 +7,42 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+/* page background */
 body {
   background: #f5f7fa;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 24px;
 }
 
-/* Phone container */
+
+
+/* phone container to look like a phone */
+
 .phone-frame {
   width: 375px;
   min-height: 640px;
   background: #ffffff;
   border-radius: 24px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
   padding: 16px 16px 24px;
   display: flex;
   flex-direction: column;
 }
 
-/* Header / nav */
+
+
+/* header */
+
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eef1f7; 
 }
 
 .app-title {
@@ -38,116 +50,231 @@ body {
   font-weight: 600;
 }
 
-.nav-link,
-.nav-button {
-  font-size: 0.85rem;
-  text-decoration: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #08b2e3;
+
+/* home page */
+.home-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  
+  padding: 20px 0;
 }
 
-.nav-link:visited {
-  color: #08b2e3;
+
+.home-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  margin-top: 20px;            
 }
 
-/* Content */
+
+.home-center-block {
+  flex: 1;                      
+  display: flex;
+  justify-content: center;       
+  align-items: center;
+  width: 100%;
+}
+
+
+.home-form {
+  width: 100%;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+
+
+/* text style */
+
 .screen-title {
-  font-size: 1.2rem;
+  text-align: center;
+  font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 8px;
 }
 
 .screen-subtitle {
   font-size: 0.9rem;
   color: #555;
-  margin-bottom: 16px;
+  max-width: 280px;
+  line-height: 1.4;
 }
 
-main {
-  flex: 1;
-}
 
-/* Forms / inputs */
+
+/* form input */
+
 label {
   font-size: 0.9rem;
   font-weight: 500;
-  display: block;
-  margin-bottom: 4px;
+  text-align: left;
 }
 
-.input,
 select {
   width: 100%;
+  padding: 12px 14px;   
+  font-size: 1rem;            
+  border-radius: 12px;   
+  border: 1px solid #cbd5e1;  
+}
+
+
+select:focus {
+  outline: 2px solid #08b2e3;
+  outline-offset: 1px;
+}
+
+
+/* primary buttons */
+
+.primary-btn {
+  width: 100%;
+  padding: 16px 14px;
+  border-radius: 999px;    
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 20px;          
+  cursor: pointer;
+  background: #08b2e3;
+  color: white;
+  box-shadow: 0 4px 10px rgba(8, 178, 227, 0.3);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+}
+
+.primary-btn:hover {
+  background: #0796c0;
+  box-shadow: 0 6px 16px rgba(8, 178, 227, 0.4);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(8, 178, 227, 0.3);
+}
+
+
+/* list page */
+.nav-link {
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: #08b2e3;
+  text-align: center;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* more layout for list screen */
+.list-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0 8px;
+}
+
+.badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eef9fd;
+  font-size: 0.75rem;
+  color: #05526a;
+}
+
+
+/* favorites */
+.favorites-section {
+  padding: 10px 0;
+  border-radius: 12px;
+  background: #f8fcff;
+}
+
+.favorites-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.favorites-hint {
+  font-size: 0.75rem;
+  color: #777;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.favorites-list {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.favorite-pill {
+  border-radius: 999px;
+  border: 1px solid #d0d7e2;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  background: #f5fbff;
+  cursor: pointer;
+}
+
+.favorite-pill:hover {
+  background: #e8f5ff;
+}
+
+/* add/search bar */
+.inline-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.input {
+  flex: 1;
   padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid #d0d7e2;
   font-size: 0.9rem;
 }
 
-.input:focus,
-select:focus {
+.input:focus {
   outline: 2px solid #08b2e3;
   outline-offset: 1px;
 }
 
-/* Primary button */
-.primary-btn {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 999px;
+.inline-form button {
+  padding: 8px 12px;
+  border-radius: 10px;
   border: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
   background: #08b2e3;
   color: white;
-  margin-top: 16px;
+  cursor: pointer;
 }
 
-.primary-btn[disabled] {
-  background: #c6e9f5;
-  cursor: not-allowed;
-}
-
-/* Secondary actions */
-.secondary-link {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 0.85rem;
-  color: #08b2e3;
-  text-decoration: none;
-}
-
-/* List screen */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: #eef9fd;
-  font-size: 0.75rem;
-  margin-bottom: 8px;
-}
-
-.save-status {
-  font-size: 0.75rem;
-  color: #777;
-  margin-bottom: 12px;
-}
-
-/* Grocery items */
+/* category block */
 .category {
-  margin-bottom: 14px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid #eef1f7;
 }
 
 .category-header {
   font-size: 0.9rem;
-  font-weight: 700;
-  padding: 4px 0;
-  border-bottom: 1px solid #e2e6f0;
+  font-weight: 600;
   margin-bottom: 4px;
 }
 
@@ -173,122 +300,151 @@ select:focus {
   cursor: pointer;
 }
 
-/* Search bar in list/map */
-.inline-form {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 12px;
+/* subtitle at bottom of list page */
+.list-main .screen-subtitle {
+  margin-top: 4px;
 }
 
-.inline-form .input {
+.list-main .primary-btn {
+  margin-top: 8px;
+}
+
+
+/* center the list page title */
+.list-title {
+  text-align: center;
+  width: 100%;
+}
+
+/* center the helper text */
+.list-helper {
+  text-align: center;
+
+  font-size: .75rem;
+  width: 100%;
+}
+
+
+/* map page */
+.map-main {
   flex: 1;
-}
-
-.inline-form button {
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: none;
-  font-size: 0.8rem;
-  background: #08b2e3;
-  color: white;
-  cursor: pointer;
-}
-
-/* Map + route placeholders */
-.map-box,
-.route-box {
-  margin-top: 10px;
-  border-radius: 12px;
-  border: 1px solid #d0d7e2;
-  background: linear-gradient(to top, #e8f6ff 0%, #ffffff 40%);
-  height: 180px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  padding: 12px 0 8px;
+}
+
+.map-subtitle {
   font-size: 0.85rem;
   color: #555;
-  text-align: center;
-  padding: 8px;
 }
 
-/* Route stats */
+/* Items list */
+.map-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.map-item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+/* store map picture styling */
+.map-image-wrapper {
+  margin-top: 4px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #d0d7e2;
+}
+
+.store-map-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.map-item-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  padding: 4px 0;
+  border-bottom: 1px solid #eef1f7; 
+}
+
+.map-item-list {
+  list-style-type: disc;   
+  padding-left: 20px; 
+  font-size: 0.9rem;
+  color: #333;
+  line-height: 1.4;
+}
+.item-aisle {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+
+/* route page */
+.route-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 0 10px;
+}
+
+.route-subtitle {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
 .route-stats {
-  margin-top: 12px;
-  padding: 8px 10px;
-  border-radius: 10px;
+  align-self: stretch;
+  padding: 10px 12px;
+  border-radius: 12px;
   background: #f3fbff;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  color: #334155;
 }
 
-/* Previous trips list */
-.trip-card {
-  border-radius: 10px;
-  border: 1px solid #dde3f0;
-  padding: 8px 10px;
-  margin-top: 8px;
-  font-size: 0.85rem;
+/* picture card */
+.route-map-card {
+  align-self: stretch;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  background: #f8fafc;
 }
 
-.trip-card-title {
+.route-map-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* steps for under the pic on route page */
+.route-steps {
+  align-self: stretch;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.route-steps-title {
+  font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 3px;
-}
-
-
-/* Previous page */
-.trip-card-meta {
-  font-size: 0.8rem;
-  color: #666;
   margin-bottom: 4px;
 }
 
-.trip-card-actions {
-  margin-top: 6px;
-  display: flex;
-  gap: 8px;
-  font-size: 0.8rem;
+.route-steps-list {
+  padding-left: 18px;
+  line-height: 1.4;
 }
 
-.trip-card-actions a {
-  text-decoration: none;
-  color: #08b2e3;
-}
-.trip-card-actions a:visited {
-  color: #08b2e3;
+/* more room for button */
+.route-main .primary-btn {
+  margin-top: auto;
 }
 
-/* Favorites section */
-.favorites-section {
-  margin-bottom: 16px;
-}
-
-.favorites-title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.favorites-hint {
-  font-size: 0.75rem;
-  color: #777;
-  margin-bottom: 6px;
-}
-
-.favorites-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.favorite-pill {
-  border-radius: 999px;
-  border: 1px solid #d0d7e2;
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  background: #f5fbff;
-  cursor: pointer;
-}
-
-.favorite-pill:hover {
-  background: #e8f5ff;
-}

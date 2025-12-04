@@ -13,28 +13,38 @@
       <span></span>
     </header>
 
-    <main>
-      <h2 class="screen-title">Plan your trip</h2>
-      <p class="screen-subtitle">
-        Choose a store to get a smart route and organized grocery list.
-      </p>
+<main class="home-layout">
 
-      <form action="list.html" method="get">
-        <label for="store">Step 1 - Choose store</label>
-        <select id="store" name="store" required>
-          <option value="">Select a store…</option>
-          <option>City Market - Downtown</option>
-          <option>Trader Joe's - Shelburne Rd</option>
-          <option>Hannaford - Dorset St</option>
-        </select>
+  <!-- top of home screen -->
+  <div class="home-top">
+    <h2 class="screen-title">Plan your trip</h2>
+    <p class="screen-subtitle">
+      Choose a store to get a smart route and organized grocery list.
+    </p>
+  </div>
 
-        <button type="submit" class="primary-btn">
-          Step 2 - Start my list
-        </button>
-      </form>
+  <!-- center of home screen -->
+  <div class="home-center-block">
+    <form action="list.html" method="get" class="home-form">
+      <label for="store">Step 1 - Choose store</label>
+      <select id="store" name="store" required>
+        <option value="">Select a store…</option>
+        <option value="City Market - Downtown">City Market - Downtown</option>
+        <option value="Trader Joe's - Shelburne Rd">Trader Joe's - Shelburne Rd</option>
+        <option value="Hannaford - Dorset St">Hannaford - Dorset St</option>
+</select>
 
-      <a href="previous.html" class="secondary-link">View previous lists</a>
-    </main>
+      </select>
+      <!-- button -->
+      <button type="submit" class="primary-btn">
+        Step 2 - Start my list
+      </button>
+    </form>
+  </div>
+
+</main>
+
+
   </div>
 </body>
 </html>

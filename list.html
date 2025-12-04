@@ -13,19 +13,16 @@
       <span></span>
     </header>
 
-    <main>
+    <main class="list-main">
       <div class="badge">
         Store: City Market - Downtown
       </div>
-      <p class="save-status">Auto-saving list… Saved at 3:42 PM</p>
 
-
-      <!-- Favorites section - items the user seems to love 
-           based on previous grocery lists -->
+      <!-- favorites section from past trips -->
       <section class="favorites-section">
         <div class="favorites-title">Favorites (from past trips)</div>
         <p class="favorites-hint">
-          Tap a favorite to quickly add it to your list.
+          Tap a favorite to quickly add it to your list in the right category.
         </p>
         <div class="favorites-list">
           <button type="button" class="favorite-pill">Milk</button>
@@ -35,53 +32,93 @@
         </div>
       </section>
 
+      <h2 class="screen-title list-title">Add Grocery Items</h2>
 
-      <h2 class="screen-title">Add Grocery Items</h2>
-
-      <form class="inline-form">
-        <input class="input" type="text" placeholder="Add or search item…">
-        <button type="button">Add</button>
+      <!-- add/search form -->
+      <form class="inline-form" onsubmit="return false;">
+        <input id="item-input" class="input" type="text" placeholder="Add or search item…">
+        <button id="add-button" type="button">Add</button>
       </form>
 
-      <!-- item categories -->
+      <!-- dairy category -->
       <section class="category">
         <div class="category-header">Dairy</div>
-        <div class="item-row">
-          <div class="item-left">
-            <input type="checkbox" id="milk">
-            <label for="milk">Milk</label>
+        <div id="dairy-items">
+          <div class="item-row">
+            <div class="item-left">
+              <input type="checkbox" id="milk">
+              <label for="milk">Butter</label>
+            </div>
+            <button class="item-delete" type="button">✕</button>
           </div>
-          <button class="item-delete" type="button">✕</button>
-        </div>
-        <div class="item-row">
-          <div class="item-left">
-            <input type="checkbox" id="yogurt">
-            <label for="yogurt">Yogurt</label>
+          <div class="item-row">
+            <div class="item-left">
+              <input type="checkbox" id="yogurt">
+              <label for="yogurt">Yogurt</label>
+            </div>
+            <button class="item-delete" type="button">✕</button>
           </div>
-          <button class="item-delete" type="button">✕</button>
+          <div class="item-row">
+            <div class="item-left">
+              <input type="checkbox" id="eggs">
+              <label for="eggs">Cheese</label>
+            </div>
+            <button class="item-delete" type="button">✕</button>
+          </div>
         </div>
       </section>
 
+      <!-- produce category -->
       <section class="category">
         <div class="category-header">Produce</div>
-        <div class="item-row">
-          <div class="item-left">
-            <input type="checkbox" id="carrots">
-            <label for="carrots">Carrots</label>
+        <div id="produce-items">
+          <div class="item-row">
+            <div class="item-left">
+              <input type="checkbox" id="carrots">
+              <label for="carrots">Carrots</label>
+            </div>
+            <button class="item-delete" type="button">✕</button>
           </div>
-          <button class="item-delete" type="button">x</button>
-        </div>
-        <div class="item-row">
-          <div class="item-left">
-            <input type="checkbox" id="tomatoes">
-            <label for="tomatoes">Tomatoes</label>
+          <div class="item-row">
+            <div class="item-left">
+              <input type="checkbox" id="tomatoes">
+              <label for="tomatoes">Tomatoes</label>
+            </div>
+            <button class="item-delete" type="button">✕</button>
           </div>
-          <button class="item-delete" type="button">x</button>
         </div>
       </section>
 
-      <p class="screen-subtitle">
-        Need to change something? Delete items with x or uncheck them!
+      <!-- meat category -->
+      <section class="category">
+        <div class="category-header">Meat</div>
+        <div id="meat-items">
+          <div class="item-row">
+            <div class="item-left">
+              <input type="checkbox" id="chicken">
+              <label for="chicken">Chicken</label>
+            </div>
+            <button class="item-delete" type="button">✕</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- pantry category -->
+      <section class="category">
+        <div class="category-header">Pantry</div>
+        <div id="pantry-items">
+          <div class="item-row">
+            <div class="item-left">
+              <input type="checkbox" id="pasta">
+              <label for="pasta">Pasta</label>
+            </div>
+            <button class="item-delete" type="button">✕</button>
+          </div>
+        </div>
+      </section>
+
+      <p class="list-helper">
+        Delete items by tapping the x button next to them.
       </p>
 
       <a href="map.html">
@@ -91,5 +128,79 @@
       </a>
     </main>
   </div>
+
+  <!-- JavaScript to handle Add, x, and Favorites -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const input = document.getElementById('item-input');
+      const addButton = document.getElementById('add-button');
+
+      const dairyContainer = document.getElementById('dairy-items');
+      const produceContainer = document.getElementById('produce-items');
+      const meatContainer = document.getElementById('meat-items');
+      const pantryContainer = document.getElementById('pantry-items');
+
+      // attach delete behavior to a given x button
+      function attachDeleteHandler(button) {
+        button.addEventListener('click', function () {
+          const row = button.closest('.item-row');
+          if (row) row.remove();
+        });
+      }
+
+      // hook up delete on all existing x buttons
+      document.querySelectorAll('.item-delete').forEach(attachDeleteHandler);
+
+      // helper to create and add a new item row to a target container
+      function addItemToCategory(name, container) {
+        const id = 'item-' + name.toLowerCase().replace(/\s+/g, '-');
+
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <div class="item-left">
+            <input type="checkbox" id="${id}">
+            <label for="${id}">${name}</label>
+          </div>
+          <button class="item-delete" type="button">✕</button>
+        `;
+
+        container.appendChild(row);
+        const deleteButton = row.querySelector('.item-delete');
+        attachDeleteHandler(deleteButton);
+      }
+
+      // add button for manual items go to pantry by default
+      addButton.addEventListener('click', function () {
+        const name = input.value.trim();
+        if (!name) return;
+        addItemToCategory(name, pantryContainer);
+        input.value = '';
+        input.focus();
+      });
+
+      // favorites for route based on item name
+      document.querySelectorAll('.favorite-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          const rawName = pill.textContent.trim();
+          const name = rawName.toLowerCase();
+          
+          // default
+          let target = pantryContainer;
+          
+
+          if (name === 'milk' || name === 'eggs') {
+            target = dairyContainer;
+          } else if (name === 'ground beef') {
+            target = meatContainer;
+          } else if (name === 'coffee') {
+            target = pantryContainer;
+          }
+
+          addItemToCategory(rawName, target);
+        });
+      });
+    });
+  </script>
 </body>
 </html>
