@@ -22,7 +22,7 @@
       <section class="favorites-section">
         <div class="favorites-title">Favorites (from past trips)</div>
         <p class="favorites-hint">
-          Tap a favorite to quickly add it to your list in the right category.
+          Tap an item to quickly add it to your list.
         </p>
         <div class="favorites-list">
           <button type="button" class="favorite-pill">Milk</button>
@@ -129,78 +129,156 @@
     </main>
   </div>
 
-  <!-- JavaScript to handle Add, x, and Favorites -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const input = document.getElementById('item-input');
-      const addButton = document.getElementById('add-button');
+  <!-- custom error prevention message instead of window alert -->
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <p id="modal-message"></p>
 
-      const dairyContainer = document.getElementById('dairy-items');
-      const produceContainer = document.getElementById('produce-items');
-      const meatContainer = document.getElementById('meat-items');
-      const pantryContainer = document.getElementById('pantry-items');
-
-      // attach delete behavior to a given x button
-      function attachDeleteHandler(button) {
-        button.addEventListener('click', function () {
-          const row = button.closest('.item-row');
-          if (row) row.remove();
-        });
-      }
-
-      // hook up delete on all existing x buttons
-      document.querySelectorAll('.item-delete').forEach(attachDeleteHandler);
-
-      // helper to create and add a new item row to a target container
-      function addItemToCategory(name, container) {
-        const id = 'item-' + name.toLowerCase().replace(/\s+/g, '-');
-
-        const row = document.createElement('div');
-        row.className = 'item-row';
-        row.innerHTML = `
-          <div class="item-left">
-            <input type="checkbox" id="${id}">
-            <label for="${id}">${name}</label>
-          </div>
-          <button class="item-delete" type="button">✕</button>
-        `;
-
-        container.appendChild(row);
-        const deleteButton = row.querySelector('.item-delete');
-        attachDeleteHandler(deleteButton);
-      }
-
-      // add button for manual items go to pantry by default
-      addButton.addEventListener('click', function () {
-        const name = input.value.trim();
-        if (!name) return;
-        addItemToCategory(name, pantryContainer);
-        input.value = '';
-        input.focus();
-      });
-
-      // favorites for route based on item name
-      document.querySelectorAll('.favorite-pill').forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          const rawName = pill.textContent.trim();
-          const name = rawName.toLowerCase();
-          
-          // default
-          let target = pantryContainer;
-          
-
-          if (name === 'milk' || name === 'eggs') {
-            target = dairyContainer;
-          } else if (name === 'ground beef') {
-            target = meatContainer;
-          } else if (name === 'coffee') {
-            target = pantryContainer;
-          }
-
-          addItemToCategory(rawName, target);
-        });
-      });
-    });
-  </script>
+    <div class="modal-buttons">
+      <button id="modal-cancel" class="modal-btn cancel-btn">Cancel</button>
+      <button id="modal-confirm" class="modal-btn confirm-btn">OK</button>
+    </div>
+  </div>
+</div>
 </body>
+
+
+  <!-- JS to handle add, x, favorites, error prevention, and duplicates -->
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* system popup for duplicate and delete handling */
+  const modal = document.getElementById('modal');
+  const modalMessage = document.getElementById('modal-message');
+  const modalCancel = document.getElementById('modal-cancel');
+  const modalConfirm = document.getElementById('modal-confirm');
+
+  let modalResolve = null;
+
+  function showModal(message) {
+    modalMessage.textContent = message;
+    modal.classList.remove('hidden');
+
+    return new Promise((resolve) => {
+      modalResolve = resolve;
+    });
+  }
+
+  modalCancel.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    if (modalResolve) modalResolve(false);
+  });
+
+  modalConfirm.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    if (modalResolve) modalResolve(true);
+  });
+
+
+  /* elements refs */
+  const input = document.getElementById('item-input');
+  const addButton = document.getElementById('add-button');
+
+  const dairyContainer = document.getElementById('dairy-items');
+  const produceContainer = document.getElementById('produce-items');
+  const meatContainer = document.getElementById('meat-items');
+  const pantryContainer = document.getElementById('pantry-items');
+
+  const allContainers = [dairyContainer, produceContainer, meatContainer, pantryContainer];
+
+
+  /* check duplicates */
+  function itemExists(name) {
+    const lower = name.toLowerCase();
+    return allContainers.some(container =>
+      [...container.querySelectorAll('label')].some(l => l.textContent.toLowerCase() === lower)
+    );
+  }
+
+
+  /* create new row for item */
+  function addItemToCategory(name, container) {
+    if (itemExists(name)) {
+      showModal(`"${name}" is already on your list.`);  
+      return;
+    }
+
+    const id = 'item-' + name.toLowerCase().replace(/\s+/g, '-');
+
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <div class="item-left">
+        <input type="checkbox" id="${id}">
+        <label for="${id}">${name}</label>
+      </div>
+      <button class="item-delete" type="button">✕</button>
+    `;
+
+    container.appendChild(row);
+
+    const deleteBtn = row.querySelector('.item-delete');
+    attachDeleteHandler(deleteBtn);
+  }
+
+
+  /* delete with popup to confirm */
+  function attachDeleteHandler(button) {
+    button.addEventListener('click', async function () {
+      const row = button.closest('.item-row');
+      if (!row) return;
+
+      const name = row.querySelector('label').textContent;
+
+      const confirmed = await showModal(`Remove "${name}" from your list?`);
+      if (confirmed) row.remove();
+    });
+  }
+
+
+  /* add delete hadnlers */
+  document.querySelectorAll('.item-delete').forEach(attachDeleteHandler);
+
+
+  /* add button */
+  addButton.addEventListener('click', function () {
+    const itemName = input.value.trim();
+    if (itemName === '') return;
+
+    let target = pantryContainer;
+
+    const lower = itemName.toLowerCase();
+    if (lower.includes('milk') || lower.includes('yogurt') || lower.includes('cheese') || lower.includes('eggs')) {
+      target = dairyContainer;
+    } else if (lower.includes('carrot') || lower.includes('tomato')) {
+      target = produceContainer;
+    } else if (lower.includes('beef') || lower.includes('chicken')) {
+      target = meatContainer;
+    }
+
+    addItemToCategory(itemName, target);
+    input.value = '';
+  });
+
+
+  /* favorites */
+  document.querySelectorAll('.favorite-pill').forEach(pill => {
+    pill.addEventListener('click', function () {
+      const name = pill.textContent.trim().toLowerCase();
+      let target = pantryContainer;
+
+      if (name === 'milk' || name === 'eggs') {
+        target = dairyContainer;
+      } else if (name === 'ground beef' || name === 'chicken') {
+        target = meatContainer;
+      } else if (name === 'coffee') {
+        target = pantryContainer;
+      }
+
+      addItemToCategory(pill.textContent.trim(), target);
+    });
+  });
+
+});
+</script>
 </html>
