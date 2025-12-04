@@ -1,0 +1,294 @@
+/* Reset-ish */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  background: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* Phone container */
+.phone-frame {
+  width: 375px;
+  min-height: 640px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  padding: 16px 16px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header / nav */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.app-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.nav-link,
+.nav-button {
+  font-size: 0.85rem;
+  text-decoration: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #08b2e3;
+}
+
+.nav-link:visited {
+  color: #08b2e3;
+}
+
+/* Content */
+.screen-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.screen-subtitle {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+main {
+  flex: 1;
+}
+
+/* Forms / inputs */
+label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.input,
+select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d0d7e2;
+  font-size: 0.9rem;
+}
+
+.input:focus,
+select:focus {
+  outline: 2px solid #08b2e3;
+  outline-offset: 1px;
+}
+
+/* Primary button */
+.primary-btn {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #08b2e3;
+  color: white;
+  margin-top: 16px;
+}
+
+.primary-btn[disabled] {
+  background: #c6e9f5;
+  cursor: not-allowed;
+}
+
+/* Secondary actions */
+.secondary-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #08b2e3;
+  text-decoration: none;
+}
+
+/* List screen */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #eef9fd;
+  font-size: 0.75rem;
+  margin-bottom: 8px;
+}
+
+.save-status {
+  font-size: 0.75rem;
+  color: #777;
+  margin-bottom: 12px;
+}
+
+/* Grocery items */
+.category {
+  margin-bottom: 14px;
+}
+
+.category-header {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 4px 0;
+  border-bottom: 1px solid #e2e6f0;
+  margin-bottom: 4px;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.9rem;
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.item-delete {
+  font-size: 0.8rem;
+  border: none;
+  background: none;
+  color: #d9534f;
+  cursor: pointer;
+}
+
+/* Search bar in list/map */
+.inline-form {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.inline-form .input {
+  flex: 1;
+}
+
+.inline-form button {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.8rem;
+  background: #08b2e3;
+  color: white;
+  cursor: pointer;
+}
+
+/* Map + route placeholders */
+.map-box,
+.route-box {
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1px solid #d0d7e2;
+  background: linear-gradient(to top, #e8f6ff 0%, #ffffff 40%);
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #555;
+  text-align: center;
+  padding: 8px;
+}
+
+/* Route stats */
+.route-stats {
+  margin-top: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f3fbff;
+  font-size: 0.85rem;
+}
+
+/* Previous trips list */
+.trip-card {
+  border-radius: 10px;
+  border: 1px solid #dde3f0;
+  padding: 8px 10px;
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+
+.trip-card-title {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+
+/* Previous page */
+.trip-card-meta {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.trip-card-actions {
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.trip-card-actions a {
+  text-decoration: none;
+  color: #08b2e3;
+}
+.trip-card-actions a:visited {
+  color: #08b2e3;
+}
+
+/* Favorites section */
+.favorites-section {
+  margin-bottom: 16px;
+}
+
+.favorites-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.favorites-hint {
+  font-size: 0.75rem;
+  color: #777;
+  margin-bottom: 6px;
+}
+
+.favorites-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.favorite-pill {
+  border-radius: 999px;
+  border: 1px solid #d0d7e2;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  background: #f5fbff;
+  cursor: pointer;
+}
+
+.favorite-pill:hover {
+  background: #e8f5ff;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grocery Route Planner - Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="phone-frame">
+    <header class="app-header">
+      <span></span>
+      <h1 class="app-title">Grocery Route Planner</h1>
+      <span></span>
+    </header>
+
+    <main>
+      <h2 class="screen-title">Plan your trip</h2>
+      <p class="screen-subtitle">
+        Choose a store to get a smart route and organized grocery list.
+      </p>
+
+      <form action="list.html" method="get">
+        <label for="store">Step 1 - Choose store</label>
+        <select id="store" name="store" required>
+          <option value="">Select a store…</option>
+          <option>City Market - Downtown</option>
+          <option>Trader Joe's - Shelburne Rd</option>
+          <option>Hannaford - Dorset St</option>
+        </select>
+
+        <button type="submit" class="primary-btn">
+          Step 2 - Start my list
+        </button>
+      </form>
+
+      <a href="previous.html" class="secondary-link">View previous lists</a>
+    </main>
+  </div>
+</body>
+</html>

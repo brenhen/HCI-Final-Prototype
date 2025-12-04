@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grocery Route Planner - List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="phone-frame">
+    <header class="app-header">
+      <a href="index.html" class="nav-link">Home</a>
+      <h1 class="app-title">Grocery List</h1>
+      <span></span>
+    </header>
+
+    <main>
+      <div class="badge">
+        Store: City Market - Downtown
+      </div>
+      <p class="save-status">Auto-saving list… Saved at 3:42 PM</p>
+
+
+      <!-- Favorites section - items the user seems to love 
+           based on previous grocery lists -->
+      <section class="favorites-section">
+        <div class="favorites-title">Favorites (from past trips)</div>
+        <p class="favorites-hint">
+          Tap a favorite to quickly add it to your list.
+        </p>
+        <div class="favorites-list">
+          <button type="button" class="favorite-pill">Milk</button>
+          <button type="button" class="favorite-pill">Eggs</button>
+          <button type="button" class="favorite-pill">Coffee</button>
+          <button type="button" class="favorite-pill">Ground Beef</button>
+        </div>
+      </section>
+
+
+      <h2 class="screen-title">Add Grocery Items</h2>
+
+      <form class="inline-form">
+        <input class="input" type="text" placeholder="Add or search item…">
+        <button type="button">Add</button>
+      </form>
+
+      <!-- item categories -->
+      <section class="category">
+        <div class="category-header">Dairy</div>
+        <div class="item-row">
+          <div class="item-left">
+            <input type="checkbox" id="milk">
+            <label for="milk">Milk</label>
+          </div>
+          <button class="item-delete" type="button">✕</button>
+        </div>
+        <div class="item-row">
+          <div class="item-left">
+            <input type="checkbox" id="yogurt">
+            <label for="yogurt">Yogurt</label>
+          </div>
+          <button class="item-delete" type="button">✕</button>
+        </div>
+      </section>
+
+      <section class="category">
+        <div class="category-header">Produce</div>
+        <div class="item-row">
+          <div class="item-left">
+            <input type="checkbox" id="carrots">
+            <label for="carrots">Carrots</label>
+          </div>
+          <button class="item-delete" type="button">x</button>
+        </div>
+        <div class="item-row">
+          <div class="item-left">
+            <input type="checkbox" id="tomatoes">
+            <label for="tomatoes">Tomatoes</label>
+          </div>
+          <button class="item-delete" type="button">x</button>
+        </div>
+      </section>
+
+      <p class="screen-subtitle">
+        Need to change something? Delete items with x or uncheck them!
+      </p>
+
+      <a href="map.html">
+        <button class="primary-btn" type="button">
+          Next - Map preview
+        </button>
+      </a>
+    </main>
+  </div>
+</body>
+</html>

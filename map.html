@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grocery Route Planner - Map</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="phone-frame">
+    <header class="app-header">
+      <a href="list.html" class="nav-link">Back to list</a>
+      <h1 class="app-title">Map Preview</h1>
+      <a href="index.html" class="nav-link">Home</a>
+    </header>
+
+    <main>
+      <h2 class="screen-title">Item Location</h2>
+      <p class="screen-subtitle">
+        Your list items are grouped by aisle so you don’t miss anything.
+      </p>
+
+      <form class="inline-form">
+        <input class="input" type="text" placeholder="Search items on map…">
+        <button type="button">Find</button>
+      </form>
+
+      <section class="category">
+        <div class="category-header">Aisle 3 - Dairy</div>
+        <div class="item-row">
+          <div class="item-left">
+            <input type="checkbox" id="map-milk">
+            <label for="map-milk">Milk</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="category">
+        <div class="category-header">Aisle 7 - Produce</div>
+        <div class="item-row">
+          <div class="item-left">
+            <input type="checkbox" id="map-carrots">
+            <label for="map-carrots">Carrots</label>
+          </div>
+        </div>
+      </section>
+
+      <div class="map-box">
+        Store map with labeled aisles and pins for each item
+      </div>
+
+      <a href="route.html">
+        <button class="primary-btn" type="button">
+          Next - Suggested route
+        </button>
+      </a>
+    </main>
+  </div>
+</body>
+</html>
