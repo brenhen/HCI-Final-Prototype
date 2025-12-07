@@ -46,5 +46,18 @@
 
 
   </div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const storeSelect = document.getElementById("store");
+
+    // Save selected store when they start their list
+    document.querySelector("form").addEventListener("submit", () => {
+      const selectedStore = storeSelect.value;
+      localStorage.setItem("selectedStore", selectedStore);
+    });
+  });
+</script>
+
+
 </body>
 </html>

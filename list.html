@@ -14,8 +14,31 @@
     </header>
 
     <main class="list-main">
+      <!-- Current store with change button -->
       <div class="badge">
-        Store: City Market - Downtown
+        <span class="badge-label">Store:</span>
+        <span id="current-store" class="badge-store">City Market - Downtown</span>
+        <button id="change-store-btn" type="button" class="badge-change-btn">
+          Change
+        </button>
+      </div>
+
+      <!-- switch store box (hidden by default) -->
+      <div id="store-switcher" class="store-switcher hidden">
+        <p class="store-switcher-title">Want to switch stores?</p>
+        <select id="store-select" class="store-select">
+          <option value="">Select a store…</option>
+          <option>City Market - Downtown</option>
+          <option>Trader Joe's - Shelburne Rd</option>
+          <option>Hannaford - Dorset St</option>
+        </select>
+
+        <div class="store-switcher-actions">
+          <button type="button" id="store-cancel" class="store-btn secondary">Cancel</button>
+          <button type="button" id="store-save" class="store-btn primary">Save</button>
+        </div>
+
+        <p id="store-status" class="store-status hidden">Store switched!</p>
       </div>
 
       <!-- favorites section from past trips -->
@@ -31,10 +54,6 @@
           <button type="button" class="favorite-pill">Ground Beef</button>
         </div>
       </section>
-
-      
-
-
 
       <h2 class="screen-title list-title">Add Grocery Items</h2>
 
@@ -131,158 +150,211 @@
         </button>
       </a>
     </main>
+
+  <div id="store-toast" class="store-toast">
+    Store switched!
   </div>
 
-  <!-- custom error prevention message instead of window alert -->
-<div id="modal" class="modal hidden">
-  <div class="modal-content">
-    <p id="modal-message"></p>
 
-    <div class="modal-buttons">
-      <button id="modal-cancel" class="modal-btn cancel-btn">Cancel</button>
-      <button id="modal-confirm" class="modal-btn confirm-btn">OK</button>
+
+
+
+
+
+  </div>
+
+  <!-- custom modal for errors/confirmations -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <p id="modal-message"></p>
+      <div class="modal-buttons">
+        <button id="modal-cancel" class="modal-btn cancel-btn">Cancel</button>
+        <button id="modal-confirm" class="modal-btn confirm-btn">OK</button>
+      </div>
     </div>
   </div>
-</div>
-</body>
 
-
-  <!-- JS to handle add, x, favorites, error prevention, and duplicates -->
   <script>
-document.addEventListener('DOMContentLoaded', function () {
-
-  /* system popup for duplicate and delete handling */
-  const modal = document.getElementById('modal');
-  const modalMessage = document.getElementById('modal-message');
-  const modalCancel = document.getElementById('modal-cancel');
-  const modalConfirm = document.getElementById('modal-confirm');
-
-  let modalResolve = null;
-
-  function showModal(message) {
-    modalMessage.textContent = message;
-    modal.classList.remove('hidden');
-
-    return new Promise((resolve) => {
-      modalResolve = resolve;
-    });
-  }
-
-  modalCancel.addEventListener('click', () => {
-    modal.classList.add('hidden');
-    if (modalResolve) modalResolve(false);
-  });
-
-  modalConfirm.addEventListener('click', () => {
-    modal.classList.add('hidden');
-    if (modalResolve) modalResolve(true);
-  });
+    document.addEventListener('DOMContentLoaded', () => {
+      /* Store name: load and change */
+      const storeSpan      = document.getElementById('current-store');
+      const changeStoreBtn = document.getElementById('change-store-btn');
+      const storeSwitcher  = document.getElementById('store-switcher');
+      const storeSelect    = document.getElementById('store-select');
+      const storeCancel    = document.getElementById('store-cancel');
+      const storeSave      = document.getElementById('store-save');
+      const storeStatus    = document.getElementById('store-status');
+      const storeToast    = document.getElementById('store-toast');   // NEW
 
 
-  /* elements refs */
-  const input = document.getElementById('item-input');
-  const addButton = document.getElementById('add-button');
-
-  const dairyContainer = document.getElementById('dairy-items');
-  const produceContainer = document.getElementById('produce-items');
-  const meatContainer = document.getElementById('meat-items');
-  const pantryContainer = document.getElementById('pantry-items');
-
-  const allContainers = [dairyContainer, produceContainer, meatContainer, pantryContainer];
-
-
-  /* check duplicates */
-  function itemExists(name) {
-    const lower = name.toLowerCase();
-    return allContainers.some(container =>
-      [...container.querySelectorAll('label')].some(l => l.textContent.toLowerCase() === lower)
-    );
-  }
-
-
-  /* create new row for item */
-  function addItemToCategory(name, container) {
-    if (itemExists(name)) {
-      showModal(`"${name}" is already on your list.`);  
-      return;
-    }
-
-    const id = 'item-' + name.toLowerCase().replace(/\s+/g, '-');
-
-    const row = document.createElement('div');
-    row.className = 'item-row';
-    row.innerHTML = `
-      <div class="item-left">
-        <input type="checkbox" id="${id}">
-        <label for="${id}">${name}</label>
-      </div>
-      <button class="item-delete" type="button">✕</button>
-    `;
-
-    container.appendChild(row);
-
-    const deleteBtn = row.querySelector('.item-delete');
-    attachDeleteHandler(deleteBtn);
-  }
-
-
-  /* delete with popup to confirm */
-  function attachDeleteHandler(button) {
-    button.addEventListener('click', async function () {
-      const row = button.closest('.item-row');
-      if (!row) return;
-
-      const name = row.querySelector('label').textContent;
-
-      const confirmed = await showModal(`Remove "${name}" from your list?`);
-      if (confirmed) row.remove();
-    });
-  }
-
-
-  /* add delete hadnlers */
-  document.querySelectorAll('.item-delete').forEach(attachDeleteHandler);
-
-
-  /* add button */
-  addButton.addEventListener('click', function () {
-    const itemName = input.value.trim();
-    if (itemName === '') return;
-
-    let target = pantryContainer;
-
-    const lower = itemName.toLowerCase();
-    if (lower.includes('milk') || lower.includes('yogurt') || lower.includes('cheese') || lower.includes('eggs')) {
-      target = dairyContainer;
-    } else if (lower.includes('carrot') || lower.includes('tomato')) {
-      target = produceContainer;
-    } else if (lower.includes('beef') || lower.includes('chicken')) {
-      target = meatContainer;
-    }
-
-    addItemToCategory(itemName, target);
-    input.value = '';
-  });
-
-
-  /* favorites */
-  document.querySelectorAll('.favorite-pill').forEach(pill => {
-    pill.addEventListener('click', function () {
-      const name = pill.textContent.trim().toLowerCase();
-      let target = pantryContainer;
-
-      if (name === 'milk' || name === 'eggs') {
-        target = dairyContainer;
-      } else if (name === 'ground beef' || name === 'chicken') {
-        target = meatContainer;
-      } else if (name === 'coffee') {
-        target = pantryContainer;
+      // load from localStorage
+      const savedStore = localStorage.getItem('selectedStore');
+      if (savedStore && storeSpan) {
+        storeSpan.textContent = savedStore;
+        if (storeSelect) {
+          Array.from(storeSelect.options).forEach(opt => {
+            if (opt.text === savedStore) storeSelect.value = opt.value;
+          });
+        }
       }
 
-      addItemToCategory(pill.textContent.trim(), target);
-    });
-  });
+      // open switch box
+      changeStoreBtn.addEventListener('click', () => {
+        storeSwitcher.classList.remove('hidden');
+        storeStatus.classList.add('hidden');
+      });
 
+      // cancel
+      storeCancel.addEventListener('click', () => {
+        storeSwitcher.classList.add('hidden');
+      });
+
+      // save new store
+      storeSave.addEventListener('click', () => {
+  const value = storeSelect.value;
+  if (!value) {
+    storeSelect.focus();
+    return;
+  }
+
+  // update badge and persist
+  storeSpan.textContent = value;
+  localStorage.setItem('selectedStore', value);
+
+  // hide switcher box
+  storeSwitcher.classList.add('hidden');
+
+  // inline status text under the box
+  storeStatus.textContent = 'Store switched!';
+  storeStatus.classList.remove('hidden');
+  setTimeout(() => storeStatus.classList.add('hidden'), 2000);
+
+  //  floating toast at bottom of phone
+  if (storeToast) {
+    storeToast.textContent = `Store switched to ${value}`;
+    storeToast.classList.add('show');
+    setTimeout(() => {
+      storeToast.classList.remove('show');
+    }, 3000);
+  }
 });
-</script>
+
+      /* Modal for error prevention */
+      const modal        = document.getElementById('modal');
+      const modalMessage = document.getElementById('modal-message');
+      const modalCancel  = document.getElementById('modal-cancel');
+      const modalConfirm = document.getElementById('modal-confirm');
+      let modalResolve   = null;
+
+      function showModal(message) {
+        modalMessage.textContent = message;
+        modal.classList.remove('hidden');
+        return new Promise(resolve => {
+          modalResolve = resolve;
+        });
+      }
+
+      modalCancel.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        if (modalResolve) modalResolve(false);
+      });
+
+      modalConfirm.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        if (modalResolve) modalResolve(true);
+      });
+
+      /* Item list logic */
+      const input       = document.getElementById('item-input');
+      const addButton   = document.getElementById('add-button');
+      const dairyItems  = document.getElementById('dairy-items');
+      const produceItems= document.getElementById('produce-items');
+      const meatItems   = document.getElementById('meat-items');
+      const pantryItems = document.getElementById('pantry-items');
+
+      const allContainers = [dairyItems, produceItems, meatItems, pantryItems];
+
+      function itemExists(name) {
+        const lower = name.toLowerCase();
+        return allContainers.some(container =>
+          [...container.querySelectorAll('label')].some(
+            label => label.textContent.toLowerCase() === lower
+          )
+        );
+      }
+
+      function attachDeleteHandler(button) {
+        button.addEventListener('click', async () => {
+          const row = button.closest('.item-row');
+          if (!row) return;
+          const name = row.querySelector('label').textContent;
+          const confirmed = await showModal(`Remove "${name}" from your list?`);
+          if (confirmed) row.remove();
+        });
+      }
+
+      function addItemToCategory(name, container) {
+        if (itemExists(name)) {
+          showModal(`"${name}" is already on your list.`);
+          return;
+        }
+
+        const id  = 'item-' + name.toLowerCase().replace(/\s+/g, '-');
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <div class="item-left">
+            <input type="checkbox" id="${id}">
+            <label for="${id}">${name}</label>
+          </div>
+          <button class="item-delete" type="button">✕</button>
+        `;
+        container.appendChild(row);
+        attachDeleteHandler(row.querySelector('.item-delete'));
+      }
+
+      // initial delete buttons
+      document.querySelectorAll('.item-delete').forEach(attachDeleteHandler);
+
+      // manual Add
+      addButton.addEventListener('click', () => {
+        const itemName = input.value.trim();
+        if (!itemName) return;
+
+        const lower = itemName.toLowerCase();
+        let target  = pantryItems;
+
+        if (lower.match(/milk|yogurt|cheese|eggs|butter|cream|dairy|cottage cheese|sour cream/)) {
+          target = dairyItems;
+        } else if (lower.match(/carrot|tomato|lettuce|fruit|vegetable|produce|broccoli|spinach|cucumber|pepper|onion|potato|banana|apple|orange/)) {
+          target = produceItems;
+        } else if (lower.match(/beef|chicken|pork|turkey|fish|meat|sausage|bacon/)) {
+          target = meatItems;
+        }
+
+        addItemToCategory(itemName, target);
+        input.value = '';
+      });
+
+      // favorites
+      document.querySelectorAll('.favorite-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          const rawName = pill.textContent.trim();
+          const name    = rawName.toLowerCase();
+          let target    = pantryItems;
+
+          if (name === 'milk' || name === 'eggs') {
+            target = dairyItems;
+          } else if (name === 'ground beef' || name === 'chicken' || name === 'turkey' || name === 'pork') {
+            target = meatItems;
+          } else if (name === 'coffee') {
+            target = pantryItems;
+          }
+
+          addItemToCategory(rawName, target);
+        });
+      });
+    });
+  </script>
+</body>
 </html>

@@ -15,9 +15,9 @@
 
     <main class="map-main">
       <!-- store and context -->
-      <div class="badge">
-        Store: City Market - Downtown
-      </div>
+  <div class="badge">
+    Store: <span id="current-store">City Market - Downtown</span>
+  </div>
       <p class="map-subtitle">
         View where your items are in the store before you start your route.
       </p>
@@ -60,5 +60,24 @@
       </a>
     </main>
   </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // dynamic store name for map.html
+    const storeSpan = document.getElementById('current-store');
+    const savedStore = localStorage.getItem('selectedStore');
+
+    if (savedStore && storeSpan) {
+      storeSpan.textContent = savedStore;
+    }
+  });
+
+
+</script>
+
+
+
+
+
 </body>
 </html>

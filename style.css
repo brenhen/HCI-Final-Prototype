@@ -23,6 +23,7 @@ body {
 
 .phone-frame {
   width: 375px;
+  position: relative;
   min-height: 640px;
   background: #ffffff;
   border-radius: 24px;
@@ -31,6 +32,31 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+
+/* store-changed toast pill */
+.store-toast {
+position: absolute;
+  top: 650px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #025a66;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 999;
+}
+
+/* visible state */
+.store-toast.show {
+  opacity: 1;
+}
+
 
 
 
@@ -184,6 +210,101 @@ select:focus {
 }
 
 
+
+.badge-label {
+  font-weight: 500;
+}
+
+.badge-store {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge-change-btn {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.badge-change-btn:hover {
+  background: #e5f4fb;
+}
+
+/* generic helper for hiding things */
+.hidden {
+  display: none;
+}
+
+/* Switch-store box */
+.store-switcher {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f8fcff;
+  border: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+}
+
+.store-switcher-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.store-select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.store-select:focus {
+  outline: 2px solid #08b2e3;
+  outline-offset: 1px;
+}
+
+/* Buttons in the switch box */
+.store-switcher-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+
+.store-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.store-btn.secondary {
+  background: #e5e7eb;
+}
+
+.store-btn.primary {
+  background: #08b2e3;
+  color: white;
+}
+
+/* “Store switched!” mini status */
+.store-status {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #047857;   /* greenish */
+}
+
+
+
+
+
 /* favorites */
 .favorites-section {
   padding: 10px 0;
@@ -251,7 +372,7 @@ select:focus {
   border: none;
   font-size: 0.85rem;
   font-weight: 500;
-  background: #08b2e3;
+  background: #07b81f;
   color: white;
   cursor: pointer;
 }
@@ -442,9 +563,6 @@ select:focus {
 
 /* error popup */
 
-.modal.hidden {
-  display: none;
-}
 
 .modal {
   position: fixed;
@@ -457,6 +575,10 @@ select:focus {
   justify-content: center;
   align-items: center;
   z-index: 50;
+}
+
+.modal.hidden {
+  display: none;
 }
 
 .modal-content {
@@ -493,3 +615,79 @@ select:focus {
   background: rgb(255, 65, 65);
   color: black;
 }
+
+
+
+/* generic hidden helper */
+.hidden {
+  display: none;
+}
+
+/* store badge extras */
+.badge-label {
+  font-weight: 500;
+}
+
+.badge-store {
+  font-weight: 500;
+  color: #0b4f6e;
+}
+
+.badge-change-btn {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+/* inline store switcher box */
+.store-switcher {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #f8fcff;
+  font-size: 0.85rem;
+}
+
+.store-switcher-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.store-select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.store-switcher-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.store-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.store-btn.secondary {
+  background: #e5e7eb;
+}
+
+.store-btn.primary {
+  background: #07b81f;
+  color: white;
+}
+
+
