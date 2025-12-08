@@ -34,25 +34,25 @@ body {
 }
 
 
-/* store-changed toast pill */
+/* toast notif */
 .store-toast {
-position: absolute;
-  top: 650px;
+  position: absolute;
+  bottom: 150px;
   left: 50%;
   transform: translateX(-50%);
-  background: #025a66;
+  background: rgba(60, 60, 60, 0.92);
   color: white;
-  padding: 8px 14px;
-  border-radius: 12px;
+  padding: 10px 18px;
+  border-radius: 14px;
   font-size: 0.85rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.20);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.35s ease;
   z-index: 999;
 }
 
-/* visible state */
+/* visible */
 .store-toast.show {
   opacity: 1;
 }

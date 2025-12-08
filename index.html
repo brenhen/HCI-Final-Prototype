@@ -50,7 +50,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const storeSelect = document.getElementById("store");
 
-    // Save selected store when they start their list
+    // save selected store when list started
     document.querySelector("form").addEventListener("submit", () => {
       const selectedStore = storeSelect.value;
       localStorage.setItem("selectedStore", selectedStore);

@@ -14,7 +14,7 @@
     </header>
 
     <main class="list-main">
-      <!-- Current store with change button -->
+      <!-- current store with change button -->
       <div class="badge">
         <span class="badge-label">Store:</span>
         <span id="current-store" class="badge-store">City Market - Downtown</span>
@@ -155,15 +155,7 @@
     Store switched!
   </div>
 
-
-
-
-
-
-
-  </div>
-
-  <!-- custom modal for errors/confirmations -->
+  <!-- modal for errors and confirmations -->
   <div id="modal" class="modal hidden">
     <div class="modal-content">
       <p id="modal-message"></p>
@@ -176,7 +168,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      /* Store name: load and change */
+      /* store name: load and change */
       const storeSpan      = document.getElementById('current-store');
       const changeStoreBtn = document.getElementById('change-store-btn');
       const storeSwitcher  = document.getElementById('store-switcher');
@@ -184,8 +176,18 @@
       const storeCancel    = document.getElementById('store-cancel');
       const storeSave      = document.getElementById('store-save');
       const storeStatus    = document.getElementById('store-status');
-      const storeToast    = document.getElementById('store-toast');   // NEW
+      const storeToast    = document.getElementById('store-toast');
 
+      // generic toast helper for "store switched", "item added", item deleted
+      function showToast(message) {
+        if (!storeToast) return;
+        storeToast.textContent = message;
+        storeToast.classList.add('show');
+
+        setTimeout(() => {
+          storeToast.classList.remove('show');
+        }, 3500);
+      }
 
       // load from localStorage
       const savedStore = localStorage.getItem('selectedStore');
@@ -209,37 +211,35 @@
         storeSwitcher.classList.add('hidden');
       });
 
+
+
+
       // save new store
       storeSave.addEventListener('click', () => {
-  const value = storeSelect.value;
-  if (!value) {
-    storeSelect.focus();
-    return;
-  }
+        const value = storeSelect.value;
+        if (!value) {
+          storeSelect.focus();
+          return;
+        }
 
-  // update badge and persist
-  storeSpan.textContent = value;
-  localStorage.setItem('selectedStore', value);
+        // update badge and persist
+        storeSpan.textContent = value;
+        localStorage.setItem('selectedStore', value);
 
-  // hide switcher box
-  storeSwitcher.classList.add('hidden');
+        // hide switch box
+        storeSwitcher.classList.add('hidden');
 
-  // inline status text under the box
-  storeStatus.textContent = 'Store switched!';
-  storeStatus.classList.remove('hidden');
-  setTimeout(() => storeStatus.classList.add('hidden'), 2000);
+        // visual feedback under the box
+        storeStatus.textContent = 'Store switched!';
+        storeStatus.classList.remove('hidden');
+        setTimeout(() => storeStatus.classList.add('hidden'), 3500);
 
-  //  floating toast at bottom of phone
-  if (storeToast) {
-    storeToast.textContent = `Store switched to ${value}`;
-    storeToast.classList.add('show');
-    setTimeout(() => {
-      storeToast.classList.remove('show');
-    }, 3000);
-  }
-});
+        // toast feedback
+        showToast(`Store switched to ${value}`);
+      });
 
-      /* Modal for error prevention */
+
+      /* modal for error prevention */
       const modal        = document.getElementById('modal');
       const modalMessage = document.getElementById('modal-message');
       const modalCancel  = document.getElementById('modal-cancel');
@@ -264,7 +264,7 @@
         if (modalResolve) modalResolve(true);
       });
 
-      /* Item list logic */
+      /* item list logic */
       const input       = document.getElementById('item-input');
       const addButton   = document.getElementById('add-button');
       const dairyItems  = document.getElementById('dairy-items');
@@ -289,9 +289,13 @@
           if (!row) return;
           const name = row.querySelector('label').textContent;
           const confirmed = await showModal(`Remove "${name}" from your list?`);
-          if (confirmed) row.remove();
+          if (confirmed) {
+            row.remove();
+            showToast(`Removed "${name}" from your list.`);
+          }
         });
       }
+
 
       function addItemToCategory(name, container) {
         if (itemExists(name)) {
@@ -307,16 +311,19 @@
             <input type="checkbox" id="${id}">
             <label for="${id}">${name}</label>
           </div>
-          <button class="item-delete" type="button">✕</button>
-        `;
+          <button class="item-delete" type="button">✕</button>`;
         container.appendChild(row);
         attachDeleteHandler(row.querySelector('.item-delete'));
+
+        // toast feedback
+        showToast(`Added "${name}" to your list.`);
       }
+
 
       // initial delete buttons
       document.querySelectorAll('.item-delete').forEach(attachDeleteHandler);
 
-      // manual Add
+      // manual add
       addButton.addEventListener('click', () => {
         const itemName = input.value.trim();
         if (!itemName) return;
